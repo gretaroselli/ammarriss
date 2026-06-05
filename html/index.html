@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Amarri's Kitchen</title>
+  <link rel="stylesheet" href="../css/shared.css" />
+  <link rel="stylesheet" href="../css/index.css" />
+</head>
+
+<body>
+
+  <!-- SPLASH -->
+  <div class="screen active" id="splash">
+    <img class="splash-logo" src="../images/logo_ak.jpg" alt="Amarri's Kitchen logo" />
+    <h1>Amarri's Kitchen</h1>
+    <p>Your ALL in 1 resto!</p>
+    <button class="tap-btn" onclick="goTo('dining')">Tap to Order</button>
+  </div>
+
+  <!-- DINING MODE -->
+  <div class="screen" id="dining">
+    <div class="dining-card">
+      <img class="dining-logo" src="../images/logo_ak.jpg" alt="Amarri's Kitchen logo" />
+      <h2>How are you dining?</h2>
+      <div class="dining-divider"></div>
+
+      <a class="dining-option" href="../html/menu.html?mode=dine-in">
+        <div class="option-icon">🪑</div>
+        <div class="option-text">
+          <strong>Dine In</strong>
+          <span>Eat at our restaurant</span>
+        </div>
+      </a>
+
+      <a class="dining-option" href="../html/menu.html?mode=takeout">
+        <div class="option-icon">🥡</div>
+        <div class="option-text">
+          <strong>Take-Out</strong>
+          <span>Pick up and go</span>
+        </div>
+      </a>
+
+      <button class="back-link" onclick="goTo('splash')">← Back</button>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    function goTo(id) {
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+    }
+
+    let toastTimer;
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => t.classList.remove('show'), 2000);
+    }
+  </script>
+</body>
+
+</html>

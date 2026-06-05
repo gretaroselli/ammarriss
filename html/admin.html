@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin – Amarri's Kitchen</title>
+  <link rel="stylesheet" href="../css/shared.css" />
+  <link rel="stylesheet" href="../css/admin.css" />
+</head>
+
+<body>
+
+  <!-- ===== LOGIN ===== -->
+  <div class="screen active" id="login">
+    <div class="login-card">
+      <img class="login-logo" src="../images/logo_ak.jpg" alt="Amarri's Kitchen logo" />
+      <h2>Amarri's Kitchen</h2>
+      <p class="login-sub">Admin · Staff Only</p>
+      <div class="login-divider"></div>
+
+      <div class="login-field">
+        <label>Admin Name</label>
+        <input type="text" id="adminName" placeholder="Enter your name" autocomplete="off" />
+      </div>
+      <div class="login-field">
+        <label>Password</label>
+        <input type="password" id="adminPass" placeholder="Enter password"
+          onkeydown="if(event.key==='Enter') handleLogin()" />
+      </div>
+
+      <p class="error-msg" id="errorMsg"></p>
+      <button class="btn-login" onclick="handleLogin()">LOG IN</button>
+      <span class="create-link">Create Account</span>
+    </div>
+  </div>
+
+  <!-- ===== DASHBOARD ===== -->
+  <div class="screen" id="dashboard">
+
+    <!-- Sidebar -->
+    <div class="dash-sidebar">
+      <img class="dash-logo" src="../images/logo_ak.jpg" alt="Amarri's Kitchen logo" />
+      <div class="dash-brand">Amarri's Kitchen</div>
+      <nav class="dash-nav">
+        <button class="dash-nav-btn active" onclick="setNav(this)">
+          <span class="nav-icon">📊</span> Dashboard
+        </button>
+        <button class="dash-nav-btn" onclick="setNav(this); showToast('Orders page')">
+          <span class="nav-icon">📋</span> Orders
+        </button>
+        <button class="dash-nav-btn" onclick="setNav(this); showToast('Reports page')">
+          <span class="nav-icon">📈</span> Reports
+        </button>
+        <button class="dash-nav-btn" onclick="setNav(this); showToast('History page')">
+          <span class="nav-icon">🕓</span> History
+        </button>
+      </nav>
+      <div class="dash-footer">
+        <div class="dash-user-info">
+          Logged in as
+          <strong id="loggedInName">Admin</strong>
+        </div>
+        <button class="btn-signout" onclick="signOut()">Sign Out</button>
+      </div>
+    </div>
+
+    <!-- Main -->
+    <div class="dash-main">
+      <div class="dash-top-row">
+        <span class="dash-title">Dashboard</span>
+        <button class="btn-refresh" onclick="showToast('Data refreshed!')">↻ Refresh</button>
+      </div>
+
+      <!-- Stats -->
+      <div class="stats-grid">
+        <div class="stat-card accent">
+          <div class="stat-icon">💰</div>
+          <div class="stat-label">Total Sales</div>
+          <div class="stat-value">₱733</div>
+          <div class="stat-sub">Today</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">🧾</div>
+          <div class="stat-label">Orders Today</div>
+          <div class="stat-value">3</div>
+          <div class="stat-sub">+1 from yesterday</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">⏳</div>
+          <div class="stat-label">Pending</div>
+          <div class="stat-value">1</div>
+          <div class="stat-sub">Needs attention</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">✅</div>
+          <div class="stat-label">Completed</div>
+          <div class="stat-value">2</div>
+          <div class="stat-sub">Today</div>
+        </div>
+      </div>
+
+      <!-- Recent Orders -->
+      <div class="section-header">
+        <span class="section-title">Recent Orders</span>
+        <span class="view-all" onclick="showToast('View all orders')">View all →</span>
+      </div>
+
+      <div class="orders-table">
+        <div class="table-head">
+          <span>Order #</span>
+          <span>Type</span>
+          <span>Items</span>
+          <span>Amount</span>
+          <span>Status</span>
+        </div>
+        <div class="order-row">
+          <span class="order-id">#001</span>
+          <span class="order-cell">Dine In</span>
+          <span class="order-cell">3 items</span>
+          <span class="order-price">₱195</span>
+          <span><span class="badge done">Done</span></span>
+        </div>
+        <div class="order-row">
+          <span class="order-id">#002</span>
+          <span class="order-cell">Take-Out</span>
+          <span class="order-cell">5 items</span>
+          <span class="order-price">₱538</span>
+          <span><span class="badge done">Done</span></span>
+        </div>
+        <div class="order-row">
+          <span class="order-id">#003</span>
+          <span class="order-cell">Dine In</span>
+          <span class="order-cell">2 items</span>
+          <span class="order-price">₱195</span>
+          <span><span class="badge pending">Pending</span></span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="../js/admin.js"></script>
+</body>
+
+</html>
