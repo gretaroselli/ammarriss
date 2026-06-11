@@ -55,6 +55,9 @@
         <button class="dash-nav-btn" onclick="setNav(this); showToast('History page')">
           <span class="nav-icon">🕓</span> History
         </button>
+        <button class="dash-nav-btn" onclick="setNav(this); showToast('Menu Management page')">
+          <span class="nav-icon">⚙️</span> Menu Management
+        </button>
       </nav>
       <div class="dash-footer">
         <div class="dash-user-info">
@@ -77,25 +80,25 @@
         <div class="stat-card accent">
           <div class="stat-icon">💰</div>
           <div class="stat-label">Total Sales</div>
-          <div class="stat-value">₱733</div>
+          <div class="stat-value" id="stat-total-sales">₱733</div>
           <div class="stat-sub">Today</div>
         </div>
         <div class="stat-card">
           <div class="stat-icon">🧾</div>
           <div class="stat-label">Orders Today</div>
-          <div class="stat-value">3</div>
+          <div class="stat-value" id="stat-orders-today">3</div>
           <div class="stat-sub">+1 from yesterday</div>
         </div>
         <div class="stat-card">
           <div class="stat-icon">⏳</div>
           <div class="stat-label">Pending</div>
-          <div class="stat-value">1</div>
+          <div class="stat-value" id="stat-pending-today">1</div>
           <div class="stat-sub">Needs attention</div>
         </div>
         <div class="stat-card">
           <div class="stat-icon">✅</div>
           <div class="stat-label">Completed</div>
-          <div class="stat-value">2</div>
+          <div class="stat-value" id="stat-completed-today">2</div>
           <div class="stat-sub">Today</div>
         </div>
       </div>
@@ -145,4 +148,4 @@
   <script src="../js/admin.js"></script>
 </body>
 
-</html>
+</html>>>
