@@ -89,10 +89,10 @@ function switchScreen(id) {
 }
 
 // ——— Sidebar nav active state ———
-function setNav(btn) {
-    document.querySelectorAll('.dash-nav-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-}
+// function setNav(btn) {
+//     document.querySelectorAll('.dash-nav-btn').forEach(b => b.classList.remove('active'));
+//     btn.classList.add('active');
+// }
 
 // ——— Toast ———
 let toastTimer;

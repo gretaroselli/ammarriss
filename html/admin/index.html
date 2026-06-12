@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin – Amarri's Kitchen</title>
+    <link rel="stylesheet" href="../../css/shared.css" />
+    <link rel="stylesheet" href="../../css/admin.css" />
+</head>
+<body>
+        <div class="screen active" id="login">
+            <div class="login-card">
+                <img class="login-logo" src="../images/logo_ak.jpg" alt="Amarri's Kitchen logo" />
+                <h2>Amarri's Kitchen</h2>
+                <p class="login-sub">Admin · Staff Only</p>
+                <div class="login-divider"></div>
+        
+                <div class="login-field">
+                    <label>Admin Name</label>
+                    <input type="text" id="adminName" placeholder="Enter your name" autocomplete="off" />
+                </div>
+                <div class="login-field">
+                    <label>Password</label>
+                    <input type="password" id="adminPass" placeholder="Enter password"
+                        onkeydown="if(event.key==='Enter') handleLogin()" />
+                </div>
+        
+                <p class="error-msg" id="errorMsg"></p>
+                <button class="btn-login" onclick="handleLogin()">LOG IN</button>
+                <span class="create-link">Create Account</span>
+            </div>
+        </div>
+</body>
+</html>
