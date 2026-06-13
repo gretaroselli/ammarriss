@@ -68,7 +68,7 @@ async function updateOrdersCards(orders)
                                 </div>
 
                                 <div class="col-5 col-sm-4 text-end">
-                                    <h2 class="fw-bold mb-2 fs-4" id="order-price">${orderPrice}</h2>
+                                    <h2 class="fw-bold mb-2 fs-4" id="order-price">₱${orderPrice}</h2>
                                     <h2 class="${statusColorClass} fs-6">${order.status}</h2>
                                     ${btnsHtml}
                                 </div>

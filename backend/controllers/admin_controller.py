@@ -97,8 +97,6 @@ def get_orders(include_items: bool = Query(False),status: str = Query(None),db: 
 @router.put("/orders/{order_id}/status")
 def updateOrder(order_id:int, status:str, db:MySQLConnection = Depends(get_db)):
     cursor = db.cursor(dictionary=True, buffered=True)
-
-
     try:
         db.start_transaction()
         # get order
@@ -115,12 +113,12 @@ def updateOrder(order_id:int, status:str, db:MySQLConnection = Depends(get_db)):
             trn = f"ORD-{order['order_id']}-{order['order_date']}"
 
         # update order and payment
-            if payment:
+            if payment and status != "Cancelled":
                 query = "UPDATE payment SET trn = %s, amount_paid = %s WHERE order_id = %s"
-                cursor.execute(query, (trn,payment['amount_paid'], order_id))
-            elif not payment:
-                query = "INSERT INTO payment (order_id, payment_method, trn, discount, vat, amount_paid) VALUES (%s, %s, %s, %s, %s, %s)"
-                cursor.execute(query, (order_id,"Cash", trn, 0, 0, order['price']))
+                cursor.execute(query, (trn, order['price'], order_id))
+            elif not payment and status != "Cancelled":
+                query = "INSERT INTO payment (order_id, payment_method, trn, amount_paid, discount, vat) VALUES (%s, %s, %s, %s, %s, %s)"
+                cursor.execute(query, (order_id,"Cash", trn, order['price'], 0, 0))
 
             query = "UPDATE `order` SET status = %s WHERE order_id = %s"
             cursor.execute(query, (status, order_id))
@@ -136,4 +134,10 @@ def updateOrder(order_id:int, status:str, db:MySQLConnection = Depends(get_db)):
     finally:
         cursor.close()
 
-        
+#get payments
+@router.get("/payments")
+def get_payments(db: MySQLConnection = Depends(get_db)):
+    cursor = db.cursor(dictionary=True)
+    cursor.execute("SELECT * FROM payment")
+    payments = cursor.fetchall()
+    return payments
