@@ -8,7 +8,7 @@ router = APIRouter()
 
 
 
-@router.get("/products")
+@router.get("/kiosk/products")
 def get_products(db: MySQLConnection = Depends(get_db)):
     cursor = db.cursor(dictionary=True)
     cursor.execute("SELECT p.product_id, p.product_name as name, p.unit_price as price, p.image_url, c.category_name, p.admin_id FROM product p JOIN category c On p.category_id = c.category_id")

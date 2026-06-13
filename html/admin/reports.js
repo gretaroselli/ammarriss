@@ -40,12 +40,14 @@ async function updateReportsStats()
         let totalCashSales = 0;
         let totalOnlineSales = 0;
 
+        let totalDineInOrders = 0;
+        let totalTakeOutOrders = 0;
+
 
 
 
 
         //Revenue Overview
-
         payments.forEach(payment => {
             totalSales += payment.amount_paid;
 
@@ -71,10 +73,20 @@ async function updateReportsStats()
             {
                 totalPendingOrders += 1;
             }
+
+            if(order.order_mode === "Dine-in")
+            {
+                totalDineInOrders += 1;
+            }
+            else if(order.order_mode === "Take-out")
+            {
+                totalTakeOutOrders += 1;
+            }
+
             totalOrders += 1;
         });
 
-        avgOrderValue = totalSales / totalCompletedOrders;
+        avgOrderValue = totalCompletedOrders > 0 ? (totalSales / totalCompletedOrders) : 0;
 
 
 
@@ -94,11 +106,14 @@ async function updateReportsStats()
 
 
 
+        //Order Types
+        document.getElementById("dine-in-orders").innerText = `${totalDineInOrders} Orders`;
+        document.getElementById("take-out-orders").innerText = `${totalTakeOutOrders} Orders`;
 
 
 
 
-
+        updateTopItemsSold();
     }
     catch
     {
@@ -112,7 +127,45 @@ async function updateReportsStats()
 
 
 }
-// function getAverageOrderValue()
-// {
-    
-// }
+async function updateTopItemsSold()
+{
+    try
+    {
+        response = await fetch("http://127.0.0.1:8000/top-items",
+        {
+            method: "GET",
+            headers:
+            {
+
+            }
+        });
+        const topSoldItems= await response.json();
+
+
+        const container = document.getElementById("top-items-list");
+        container.innerHTML = ""; 
+
+        if (topSoldItems.length === 0) {
+            container.innerHTML = `<p class="text-muted small mb-0 py-2">No items ordered yet today.</p>`;
+            return;
+        }
+
+        topSoldItems.forEach((item, index) => {
+            const itemHTML = `
+                <div class="d-flex justify-content-between align-items-center border-bottom pb-2">
+                    <div class="d-flex align-items-center gap-2">
+                        <span class="badge bg-light text-dark rounded-circle px-2 py-1 small">${index + 1}</span>
+                        <span class="fw-semibold text-dark">${item.product_name}</span>
+                    </div>
+                    <span class="badge bg-primary rounded-pill px-3">${item.total_qty_sold} sold</span>
+                </div>
+            `;
+            container.insertAdjacentHTML("beforeend", itemHTML);
+        });
+
+    }
+    catch
+    {
+        alert("Error");
+    }
+}
