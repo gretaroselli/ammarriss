@@ -27,7 +27,7 @@ async function updateDashboardStats() {
 
         orders.forEach(order => {
             const price = parseFloat(order.price) || 0;
-            const orderDate = order.created_at.split('T')[0];
+            const orderDate = order.updated_at.split('T')[0];
 
 
 
