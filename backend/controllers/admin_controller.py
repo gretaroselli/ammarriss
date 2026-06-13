@@ -92,12 +92,39 @@ def get_orders(include_items: bool = Query(False),status: str = Query(None),db: 
 
     print(orders)
     return orders
-# update orders
+
+# update orders and payments
 @router.put("/orders/{order_id}/status")
 def updateOrder(order_id:int, status:str, db:MySQLConnection = Depends(get_db)):
     cursor = db.cursor(dictionary=True)
-    query = "UPDATE `order` SET status = %s WHERE order_id = %s"
-    cursor.execute(query, (status, order_id))
+
+
+    # get order
+    query = "SELECT * FROM `order` WHERE order_id = %s"
+    cursor.execute(query, (order_id,))
+    order = cursor.fetchone()
+
+    # get payment
+    if order:
+        query = "SELECT payment_id,amount_paid FROM payment JOIN `order` ON payment.order_id = `order`.order_id WHERE `order`.order_id = %s"
+        cursor.execute(query, (order_id,))
+        payment = cursor.fetchone()
+
+        trn = f"ORD-{order['order_id']}-{payment['payment_id']}"
+
+        # update order and payment
+        if payment:
+            query = "UPDATE payment SET trn = %s, amount_paid = %s WHERE order_id = %s"
+            cursor.execute(query, (trn,payment['amount_paid'], order_id))
+        else:
+            query = "INSERT INTO payment (order_id, payment_method, trn, discount, vat, amount_paid) VALUES (%s, %s, %s, %s, %s, %s)"
+            cursor.execute(query, (order_id,"Cash", trn, 0, 0, order['price']))
+
+        query = "UPDATE `order` SET status = %s WHERE order_id = %s"
+        cursor.execute(query, (status, order_id))
+
+
+
     db.commit()
     return {"message": "order updated"}
 
