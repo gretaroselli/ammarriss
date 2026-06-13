@@ -27,29 +27,30 @@ async function updateDashboardStats() {
 
         orders.forEach(order => {
             const price = parseFloat(order.price) || 0;
-            const orderDate = order.updated_at.split('T')[0];
+            const updatedOrderDate = order.updated_at.split('T')[0];
+            const createdOrderDate = order.created_at.split('T')[0];
 
 
 
-            if (orderDate === todayString) {
+
+            if (createdOrderDate === todayString) {
                 totalOrdersToday++;
                 todaysOrders.push(order);
             }
 
-            if (order.status === "Completed" && orderDate === todayString || order.status === "Paid" && orderDate === todayString) {
+            if (order.status === "Completed" && updatedOrderDate === todayString || order.status === "Paid" && updatedOrderDate === todayString) {
                 completedCount++;
                 totalSalesToday += price;
             }
-            else if (order.status === "Pending" && orderDate === todayString) {
+            else if (order.status === "Pending" && updatedOrderDate === todayString) {
                 pendingCount++;
             }
-            else if (order.status === 'Failed' && orderDate === todayString || order.status === 'Cancelled' && orderDate === todayString) {
+            else if (order.status === 'Failed' && updatedOrderDate === todayString || order.status === 'Cancelled' && updatedOrderDate === todayString) {
                 failedCount++;
             }
 
         });
 
-        totalOrdersToday = pendingCount + completedCount + failedCount;
 
         document.getElementById('stat-total-sales').innerText = `PHP ${totalSalesToday.toLocaleString()}`;
         document.getElementById('stat-orders-today').innerText = `${totalOrdersToday}`;

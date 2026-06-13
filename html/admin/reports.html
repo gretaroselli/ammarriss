@@ -21,11 +21,10 @@
                 <a class="nav-link text-white-50 rounded-pill py-2 px-3 link-light" href="dashboard.html">Dashboard</a>
             </li>
             <li class="nav-item mb-2">
-                <a class="nav-link bg-warning text-white fw-bold rounded-pill py-2 px-3 shadow-sm"
-                    href="orders.html">Orders</a>
+                <a class="nav-link text-white-50 rounded-pill py-2 px-3 link-light" href="orders.html">Orders</a>
             </li>
             <li class="nav-item mb-2">
-                <a class="nav-link text-white-50 rounded-pill py-2 px-3 link-light" href="reports.html">Report</a>
+                    <a class="nav-link bg-warning text-white fw-bold rounded-pill py-2 px-3 shadow-sm" href="reports.html">Report</a>
             </li>
             <li class="nav-item mb-2">
                 <a class="nav-link text-white-50 rounded-pill py-2 px-3 link-light" href="transactions.html">Transaction
@@ -65,19 +64,45 @@
             <div class="row g-4 mb-4">
                 <div class="col-12 col-md-6">
                     <div class="card border-0 shadow-sm h-100 p-3">
-                        <div class="card-body">
-                            <h6 class="text-muted text-uppercase fs-7 fw-bold mb-2">Revenue</h6>
-                            <h2 class="fw-extrabold mb-0" id="stat-total-sales">0</h2>
-                            <small class="text-muted fw-semibold">Today</small>
+                        <div class="card-body p-2">
+                            <h6 class="text-muted text-uppercase fs-7 fw-bold mb-3">Revenue Overview</h6>
+                        
+                            <div class="row align-items-center py-1 border-bottom border-light m-0">
+                                <div class="col-6 p-0 text-secondary fw-semibold">Gross Sales</div>
+                                <div class="col-6 p-0 text-end fw-bold text-danger fs-5" id="gross-sales">0</div>
+                            </div>
+                        
+                            <div class="row align-items-center py-1 border-bottom border-light m-0">
+                                <div class="col-6 p-0 text-secondary fw-semibold">Total Orders</div>
+                                <div class="col-6 p-0 text-end fw-bold text-dark fs-5" id="total-orders">0</div>
+                            </div>
+                        
+                            <div class="row align-items-center py-1 m-0">
+                                <div class="col-6 p-0 text-secondary fw-semibold">Avg Order Value</div>
+                                <div class="col-6 p-0 text-end fw-bold text-dark fs-5" id="avg-order-value">0</div>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="col-12 col-md-6">
                     <div class="card border-0 shadow-sm h-100 p-3">
-                        <div class="card-body">
-                            <h6 class="text-muted text-uppercase fs-7 fw-bold mb-2">Order Status</h6>
-                            <h2 class="fw-extrabold mb-0" id="stat-total-sales">0</h2>
-                            <small class="text-muted fw-semibold">Today</small>
+                        <div class="card-body p-2">
+                            <h6 class="text-muted text-uppercase fs-7 fw-bold mb-3">Order Status</h6>
+                
+                            <div class="row align-items-center py-1 border-bottom border-light m-0">
+                                <div class="col-6 p-0 text-secondary fw-semibold">Complete</div>
+                                <div class="col-6 p-0 text-end fw-bold text-dark fs-5" id="complete-sales">0</div>
+                            </div>
+                
+                            <div class="row align-items-center py-1 border-bottom border-light m-0">
+                                <div class="col-6 p-0 text-secondary fw-semibold">Pending</div>
+                                <div class="col-6 p-0 text-end fw-bold text-dark fs-5" id="pending-sales">0</div>
+                            </div>
+                
+                            <div class="row align-items-center py-1 m-0">
+                                <div class="col-6 p-0 text-secondary fw-semibold">Completion Rate</div>
+                                <div class="col-6 p-0 text-end fw-bold text-dark fs-5" id="completion-rate">0</div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -85,19 +110,37 @@
             <div class="row g-4 mb-4">
                 <div class="col-12 col-md-6">
                     <div class="card border-0 shadow-sm h-100 p-3">
-                        <div class="card-body">
-                            <h6 class="text-muted text-uppercase fs-7 fw-bold mb-2">Payment Methods</h6>
-                            <h2 class="fw-extrabold mb-0" id="stat-total-sales">0</h2>
-                            <small class="text-muted fw-semibold">Today</small>
+                        <div class="card-body p-2">
+                            <h6 class="text-muted text-uppercase fs-7 fw-bold mb-3">Payment Method</h6>
+                
+                            <div class="row align-items-center py-1 border-bottom border-light m-0">
+                                <div class="col-6 p-0 text-secondary fw-semibold">Cash</div>
+                                <div class="col-6 p-0 text-end fw-bold text-dark fs-5" id="gross-sales">0</div>
+                            </div>
+                
+                            <div class="row align-items-center py-1 border-bottom border-light m-0">
+                                <div class="col-6 p-0 text-secondary fw-semibold">Online</div>
+                                <div class="col-6 p-0 text-end fw-bold text-dark fs-5" id="total-orders">0</div>
+                            </div>
+            
                         </div>
                     </div>
                 </div>
                 <div class="col-12 col-md-6">
                     <div class="card border-0 shadow-sm h-100 p-3">
-                        <div class="card-body">
-                            <h6 class="text-muted text-uppercase fs-7 fw-bold mb-2">Order Types</h6>
-                            <h2 class="fw-extrabold mb-0" id="stat-total-sales">0</h2>
-                            <small class="text-muted fw-semibold">Today</small>
+                        <div class="card-body p-2">
+                            <h6 class="text-muted text-uppercase fs-7 fw-bold mb-3">Order Types</h6>
+                
+                            <div class="row align-items-center py-1 border-bottom border-light m-0">
+                                <div class="col-6 p-0 text-secondary fw-semibold">Dine-In</div>
+                                <div class="col-6 p-0 text-end fw-bold text-dark fs-5" id="complete-sales">0</div>
+                            </div>
+                
+                            <div class="row align-items-center py-1 border-bottom border-light m-0">
+                                <div class="col-6 p-0 text-secondary fw-semibold">Take-Out</div>
+                                <div class="col-6 p-0 text-end fw-bold text-dark fs-5" id="pending-sales">0</div>
+                            </div>
+                
                         </div>
                     </div>
                 </div>
@@ -113,7 +156,6 @@
                         
                     </div>
                 </div>
-
 
             </div>
 
