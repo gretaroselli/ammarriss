@@ -435,4 +435,11 @@ def delete_category(category_id: int, db: MySQLConnection = Depends(get_db)):
     finally:
         cursor.close()
 
-#
+#get transactions
+@router.get("/transactions")
+def get_transactions(db: MySQLConnection = Depends(get_db)):
+    cursor = db.cursor(dictionary=True)
+    query = "SELECT o.order_id, o.updated_at, o.order_mode, p.payment_method, p.amount_paid FROM `order` o JOIN payment p ON o.order_id = p.order_id WHERE o.status = 'Completed'"
+    cursor.execute(query)
+    transactions = cursor.fetchall()
+    return transactions

@@ -2,7 +2,7 @@
 async function updateDashboardStats() {
     try {
         //get orders from the backend
-        const response = await fetch("http://127.0.0.1:8000/orders",
+        const response = await fetch("/orders",
             {
                 method: "GET",
                 headers:
@@ -52,7 +52,7 @@ async function updateDashboardStats() {
         });
 
 
-        document.getElementById('stat-total-sales').innerText = `PHP ${totalSalesToday.toLocaleString()}`;
+        document.getElementById('stat-total-sales').innerText = `₱ ${totalSalesToday.toLocaleString()}`;
         document.getElementById('stat-orders-today').innerText = `${totalOrdersToday}`;
         document.getElementById('stat-pending-today').innerText = `${pendingCount}`;
         document.getElementById('stat-completed-today').innerText = `${completedCount}`;

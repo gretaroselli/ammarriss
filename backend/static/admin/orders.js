@@ -98,7 +98,7 @@ async function updateOrdersCards(orders)
 //filtering orders
 async function filterAll()
 {
-    const response = await fetch("http://127.0.0.1:8000/orders?include_items=true",
+    const response = await fetch("/orders?include_items=true",
         {
             method: "GET",
             headers:
@@ -111,7 +111,7 @@ async function filterAll()
 }
 async function filterPending()
 {
-    const response = await fetch("http://127.0.0.1:8000/orders?include_items=true&status=Pending",
+    const response = await fetch("/orders?include_items=true&status=Pending",
         {
             method: "GET",
             headers:
@@ -123,7 +123,7 @@ async function filterPending()
     updateOrdersCards(orders);
 }
 async function filterCompleted() {
-    const response = await fetch("http://127.0.0.1:8000/orders?include_items=true&status=Completed",
+    const response = await fetch("/orders?include_items=true&status=Completed",
         {
             method: "GET",
             headers:
@@ -136,7 +136,7 @@ async function filterCompleted() {
 }
 async function filterCancelled()
 {
-    const response = await fetch("http://127.0.0.1:8000/orders?include_items=true&status=Cancelled",
+    const response = await fetch("/orders?include_items=true&status=Cancelled",
         {
             method: "GET",
             headers:
@@ -162,7 +162,7 @@ function highlightButton(clickedButton) {
 //updating orders
 async function completeOrder(orderId)
 {
-    const response = await fetch(`http://127.0.0.1:8000/orders/${orderId}/status?status=Completed`, {
+    const response = await fetch(`/orders/${orderId}/status?status=Completed`, {
         method: "PUT"
     });
 
@@ -173,7 +173,7 @@ async function completeOrder(orderId)
 }
 async function cancelOrder(orderId)
 {
-    const response = await fetch(`http://127.0.0.1:8000/orders/${orderId}/status?status=Cancelled`, {
+    const response = await fetch(`/orders/${orderId}/status?status=Cancelled`, {
         method: "PUT"
     });
 

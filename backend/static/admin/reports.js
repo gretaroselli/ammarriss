@@ -4,7 +4,7 @@ async function updateReportsStats()
     try
     {
         //get payments
-        response = await fetch("http://127.0.0.1:8000/payments",
+        response = await fetch("/payments",
             {
                 method: "GET",
                 headers:
@@ -15,7 +15,7 @@ async function updateReportsStats()
         const payments = await response.json();
         
         //get orders
-        response = await fetch("http://127.0.0.1:8000/orders",
+        response = await fetch("/orders",
             {
                 method: "GET",
                 headers:
@@ -131,7 +131,7 @@ async function updateTopItemsSold()
 {
     try
     {
-        response = await fetch("http://127.0.0.1:8000/top-items",
+        response = await fetch("/top-items",
         {
             method: "GET",
             headers:

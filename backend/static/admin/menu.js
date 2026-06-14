@@ -81,7 +81,7 @@ function handleFileSelect(file) {
 
 async function loadCategories() {
     try {
-        const response = await fetch("http://127.0.0.1:8000/categories");
+        const response = await fetch("/categories");
         const categories = await response.json();
 
         const container = document.getElementById("categories-container");
@@ -125,7 +125,7 @@ function selectCategory(id, name) {
 }
 async function loadProductsByCategory(categoryId) {
     try {
-        const response = await fetch(`http://127.0.0.1:8000/categories/${categoryId}/products`);
+        const response = await fetch(`/categories/${categoryId}/products`);
         const products = await response.json();
 
         const tableBody = document.getElementById("products-table-body");
@@ -183,7 +183,7 @@ async function editProduct(productId) {
         if (comboList) comboList.innerHTML = "";
 
         // Fetch the entire inventory registry for combo assignment context
-        const allProdsRes = await fetch(`http://127.0.0.1:8000/products`);
+        const allProdsRes = await fetch(`/products`);
         let allProducts = [];
 
         if (allProdsRes.ok) {
@@ -229,7 +229,7 @@ async function editProduct(productId) {
             });
         }
 
-        const response = await fetch(`http://127.0.0.1:8000/products/${productId}`);
+        const response = await fetch(`/products/${productId}`);
         if (!response.ok) throw new Error("Failed to pull product data");
 
         const product = await response.json();
@@ -248,7 +248,7 @@ async function editProduct(productId) {
 
         if (product.image_url) {
             const previewImg = document.getElementById("edit-image-preview");
-            if (previewImg) previewImg.src = `http://127.0.0.1:8000/static/uploads/${product.image_url}`;
+            if (previewImg) previewImg.src = `/static/uploads/${product.image_url}`;
 
             const dropZone = document.getElementById("image-drop-zone");
             const previewContainer = document.getElementById("image-preview-container");
@@ -300,7 +300,7 @@ async function handleEditFormSubmit(event) {
     }
 
     try {
-        const response = await fetch(`http://127.0.0.1:8000/products/${productId}`, {
+        const response = await fetch(`/products/${productId}`, {
             method: "PUT",
             body: formData
         });
@@ -391,7 +391,7 @@ async function triggerAddCategory() {
     }
 
     try {
-        const response = await fetch("http://127.0.0.1:8000/categories/create", {
+        const response = await fetch("/categories/create", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ category_name: categoryName, admin_id: localStorage.getItem('admin_id')})
@@ -415,7 +415,7 @@ async function triggerAddProductPlaceholder() {
     }
 
     try {
-        const response = await fetch("http://127.0.0.1:8000/products/create", {
+        const response = await fetch("/products/create", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ category_id: parseInt(activeCategoryId), admin_id: localStorage.getItem('admin_id')})
@@ -438,7 +438,7 @@ async function deleteProduct(productId) {
     }
 
     try {
-        const response = await fetch(`http://127.0.0.1:8000/products/delete/${productId}`, {
+        const response = await fetch(`/products/delete/${productId}`, {
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json"
@@ -453,8 +453,6 @@ async function deleteProduct(productId) {
         if (typeof activeCategoryId !== 'undefined') {
             loadProductsByCategory(activeCategoryId);
         }
-
-        alert("Product removed successfully.");
     } catch (error) {
         console.error("Delete Error:", error);
         alert("Error: Could not delete product.");
@@ -467,7 +465,7 @@ async function deleteCategory(categoryId) {
     }
 
     try {
-        const response = await fetch(`http://127.0.0.1:8000/categories/delete/${categoryId}`, {
+        const response = await fetch(`/categories/delete/${categoryId}`, {
             method: "DELETE"
         });
 

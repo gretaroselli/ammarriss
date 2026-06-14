@@ -1,10 +1,23 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
 
 from .controllers import admin_controller
 from .controllers import kiosk_controller
 
 app = FastAPI()
+
+
+app.mount("/static", StaticFiles(directory="static"), name="static")
+
+@app.get("/admin")
+async def get_admin():
+    return FileResponse("static/admin/index.html")
+
+@app.get("/")
+async def get_admin():
+    return FileResponse("static/admin/index.html")
 
 
 

@@ -3,7 +3,7 @@ async function handleLogin()
     const username = document.getElementById("adminName").value;
     const password = document.getElementById("adminPass").value;
 
-    const response = await fetch("http://127.0.0.1:8000/login",
+    const response = await fetch("/login",
         {
             "method": "POST",
             "headers":
@@ -26,7 +26,7 @@ async function handleLogin()
         // localStorage.setItem('token', token.access_token);
 
 
-        window.location.href = "dashboard.html";
+        window.location.href = "/static/admin/dashboard.html";
     }
     else if (response.status === 401)
     {
@@ -40,17 +40,17 @@ async function handleLogin()
 function handleSignOut()
 {
     localStorage.clear();
-    window.location.href = "index.html";
+    window.location.href = "/static/admin/index.html";
 }
-
 
 function setSidebarUserInfo()
 {
-    const savedUsername = localStorage.getItem('user-name');
-    const savedRole = localStorage.getItem('user-role');
+    const savedUsername = localStorage.getItem('userName');
+    const savedRole = localStorage.getItem('userRole');
 
     const nameElement = document.getElementById('user-name');
     const roleElement = document.getElementById('user-role');
+
 
     if (nameElement && savedUsername) {
         nameElement.innerText = savedUsername;
