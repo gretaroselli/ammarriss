@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin – Amarri's Kitchen</title>
+    <link href="/static/admin/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .login-card {
+            max-width: 400px;
+            border-radius: 16px;
+        }
+    </style>
+</head>
+
+<body class="d-flex align-items-center justify-content-center min-vh-100">
+
+    <div class="card login-card shadow-sm border-0 p-4" id="login">
+        <div class="card-body text-center">
+            <img class="mb-3 rounded-circle" src="/static/images/logo_ak.jpg" alt="Logo"
+                style="width: 80px; height: 80px; object-fit: cover;" />
+            <h2 class="fw-bold mb-1">Amarri's Kitchen</h2>
+            <p class="text-muted small mb-4">ACCOUNT CREATION</p>
+            <hr class="mb-4">
+
+            <div class="text-start mb-3">
+                <label class="form-label text-muted small fw-semibold">Admin Name</label>
+                <input type="text" id="adminName" class="form-control py-2" placeholder="Enter your name"
+                    autocomplete="off" />
+            </div>
+
+            <div class="text-start mb-3">
+                <label class="form-label text-muted small fw-semibold">Email</label>
+                <input type="text" id="adminEmail" class="form-control py-2" placeholder="Enter your email" autocomplete="off" />
+            </div>
+
+            <div class="text-start mb-4">
+                <label class="form-label text-muted small fw-semibold">Password</label>
+                <input type="password" id="adminPass" class="form-control py-2" placeholder="Enter password"
+                    onkeydown="if(event.key==='Enter') handleLogin()" />
+            </div>
+
+            <p class="text-danger small fw-bold mb-3" id="errorMsg"></p>
+
+            <button class="btn btn-warning w-100 py-2 text-white fw-bold shadow-sm" onclick="handleAccountCreation()">CREATE ACCOUNT</button>
+        </div>
+    </div>
+
+    <script src="/static/admin/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="/static/admin/shared.js"></script>
+</body>
+
+</html>

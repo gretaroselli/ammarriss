@@ -42,6 +42,38 @@ function handleSignOut()
     localStorage.clear();
     window.location.href = "/static/admin/index.html";
 }
+async function handleAccountCreation()
+{
+    const username = document.getElementById("adminName").value;
+    const password = document.getElementById("adminPass").value;
+    const email = document.getElementById("adminEmail").value;
+
+    try
+    {
+        const response = await fetch("/register",
+            {
+                "method": "POST",
+                "headers":
+                {
+                    "Content-Type": "application/json"
+                },
+                "body": JSON.stringify({
+                    "username": username,
+                    "password": password,
+                    "email": email
+                })
+            });
+
+        if (response.ok) {
+            alert("Account created successfully");
+        }
+    }
+    catch
+    {
+        alert("Error creating account");
+    }
+
+}
 
 function setSidebarUserInfo()
 {

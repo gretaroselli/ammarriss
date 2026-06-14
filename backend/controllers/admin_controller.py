@@ -51,6 +51,27 @@ def login(username: str = Body(...), password: str = Body(...), db: MySQLConnect
 #     else:
 #         raise HTTPException(status_code=401, detail="Invalid token")
 
+#handle account creation
+@router.post("/register")
+def create_account(username: str = Body(...), password: str = Body(...), email: str = Body(...), db: MySQLConnection = Depends(get_db)):
+    try:
+        cursor = db.cursor(dictionary=True)
+        query = 'INSERT INTO admin (admin_name, role, email, password) VALUES (%s, %s, %s, %s)'
+        hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
+
+        cursor.execute(query, (username,"Admin", email, hashed_password))
+        db.commit()
+        return {"message": "Account created successfully"}
+    except Exception as e:
+        return {"error": str(e)}, 500
+    finally:
+        cursor.close()
+
+
+
+
+
+
 #gets orders for the admin
 @router.get("/orders")
 def get_orders(include_items: bool = Query(False),status: str = Query(None),db: MySQLConnection = Depends(get_db)):
