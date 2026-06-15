@@ -13,7 +13,7 @@ import secrets
 
 router = APIRouter()
 
-# tokens = [{}]
+tokens = []
 
 #handle login uses bcrypt for hashing
 @router.post("/login")
@@ -28,9 +28,8 @@ def login(username: str = Body(...), password: str = Body(...), db: MySQLConnect
         passwordBytes = password.encode('utf-8')
         hashBytes = hashed_password_from_db.encode('utf-8')
 
-        # currentUserToken = secrets.token_hex(16)
-        # expiry = datetime.now() + timedelta(hours=2)
-        # tokens.append({"token": currentUserToken, "expires_at": expiry})
+        currentUserToken = "100"
+        tokens.append({"token": currentUserToken})
 
         
         if not bcrypt.checkpw(passwordBytes, hashBytes):
@@ -41,15 +40,29 @@ def login(username: str = Body(...), password: str = Body(...), db: MySQLConnect
 
     cursor.close()
     return {"message": "Login successful",
-            "admin_id": identifiedAdmin['admin_id']}
+            "admin_id": identifiedAdmin['admin_id'],
+            "token":currentUserToken}
 
-# #check token authenticity
-# @router.get("/check-token")
-# def check_token(token: str = Query(...), db: MySQLConnection = Depends(get_db)):
-#     if token in tokens:
-#         return {"message": "Token is valid"}
-#     else:
-#         raise HTTPException(status_code=401, detail="Invalid token")
+#check token authenticity
+@router.post("/authenticate-user")
+def check_token(clientToken: str = Body(...), db: MySQLConnection = Depends(get_db)):
+
+    for token in tokens:
+        if token["token"] == clientToken:
+            return {"message": "Token is valid"}
+
+    raise HTTPException(status_code=401, detail="Invalid token")
+
+#signout user, removes token
+@router.post("/signout")
+def check_token(clientToken: str = Body(...), db: MySQLConnection = Depends(get_db)):
+
+    for token in tokens:
+        if token["token"] == clientToken:
+            tokens.remove(token)
+
+    return {"message": "Token is removed"}
+
 
 #handle account creation
 @router.post("/register")

@@ -19,9 +19,10 @@ async function handleLogin()
     const admin = await response.json();
     if(response.ok)
     {
-        localStorage.setItem('userName', username);
-        localStorage.setItem('userRole', 'admin');
-        localStorage.setItem('admin_id', admin.admin_id);
+        sessionStorage.setItem('userName', username);
+        sessionStorage.setItem('userRole', 'admin');
+        sessionStorage.setItem('admin_id', admin.admin_id);
+        sessionStorage.setItem('token', admin.token);
 
         // localStorage.setItem('token', token.access_token);
 
@@ -37,10 +38,26 @@ async function handleLogin()
 
 
 }
-function handleSignOut()
+async function handleSignOut()
 {
-    localStorage.clear();
-    window.location.href = "/static/admin/index.html";
+    const token = sessionStorage.getItem('token') || "null";
+    const response = await fetch("/signout",
+        {
+            "method": "POST",
+            "headers":
+            {
+                "Content-Type": "application/json"
+            },
+            "body": JSON.stringify(token)
+        });
+
+    if (response.ok) {
+        sessionStorage.clear();
+        localStorage.clear();
+        window.location.href = "/static/admin/index.html";
+    }
+
+
 }
 async function handleAccountCreation()
 {
@@ -77,8 +94,8 @@ async function handleAccountCreation()
 
 function setSidebarUserInfo()
 {
-    const savedUsername = localStorage.getItem('userName');
-    const savedRole = localStorage.getItem('userRole');
+    const savedUsername = sessionStorage.getItem('userName');
+    const savedRole = sessionStorage.getItem('userRole');
 
     const nameElement = document.getElementById('user-name');
     const roleElement = document.getElementById('user-role');
@@ -93,4 +110,42 @@ function setSidebarUserInfo()
     }
 
 
+}
+
+async function authenticate()
+{
+    try
+    {
+        const token = sessionStorage.getItem('token') || "null";
+        const response = await fetch("/authenticate-user",
+            {
+                
+                "method": "POST",
+                "headers":
+                {
+                    "Content-Type": "application/json"
+                },
+                "body": JSON.stringify(token)
+            });
+        const message = await response.json();
+
+        if (response.status === 401)
+        {
+            handleSignOut();
+            alert("UNAUTHORIZED: Invalid session token!");
+            
+        }
+        else if(response.ok)
+        {
+            document.body.style.display = "block";
+        }
+    }
+    catch
+    {
+        alert("UNAUTHORIZED!!!!!");
+        handleSignOut();
+    }
+
+
+    
 }
