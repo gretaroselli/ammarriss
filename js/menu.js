@@ -3,9 +3,22 @@
 // =============================================
 
 let menuData = {};
-let cart = {};         // { itemName: { price, qty, img } }
+let cart = loadSavedCart();         // { itemName: { price, qty, img } }
 let currentCat = '';
 let currentSearch = '';
+
+function loadSavedCart() {
+    try {
+        return JSON.parse(localStorage.getItem('amarriCart')) || {};
+    } catch (error) {
+        console.warn('Saved cart is invalid. Starting with an empty cart.', error);
+        return {};
+    }
+}
+
+function saveCart() {
+    localStorage.setItem('amarriCart', JSON.stringify(cart));
+}
 
 // ——— Read mode from URL (set by index.html) ———
 const urlParams = new URLSearchParams(window.location.search);
@@ -157,6 +170,7 @@ function addToCart(index, name, price, img) {
     } else {
         cart[name] = { price, qty: 1, img };
     }
+    saveCart();
     updateCartCount();
     showToast(`Added: ${name}`);
 }
@@ -205,6 +219,7 @@ function renderCart() {
 function changeQty(name, delta) {
     cart[name].qty += delta;
     if (cart[name].qty <= 0) delete cart[name];
+    saveCart();
     updateCartCount();
     renderCart();
 }
@@ -223,10 +238,18 @@ function toggleCart() {
 
 // ——— Cart: place order ———
 function placeOrder() {
-    showToast('Order placed! Thank you 🎉');
-    cart = {};
-    updateCartCount();
-    toggleCart();
+
+    localStorage.setItem(
+        'amarriCart',
+        JSON.stringify(cart)
+    );
+
+    localStorage.setItem(
+        'amarriMode',
+        document.getElementById('modeBadge').textContent
+    );
+
+    window.location.href = 'cart.html';
 }
 
 // ——— Toast ———
@@ -240,4 +263,5 @@ function showToast(msg) {
 }
 
 // ——— Init ———
+updateCartCount();
 loadMenu();

@@ -36,6 +36,24 @@ body {
     min-height: 100vh;
 }
 
+button,
+input,
+a {
+    font: inherit;
+}
+
+button,
+a {
+    -webkit-tap-highlight-color: transparent;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible {
+    outline: 3px solid rgba(244, 134, 10, 0.35);
+    outline-offset: 3px;
+}
+
 /* ===== TOAST ===== */
 .toast {
     position: fixed;
@@ -71,3 +89,14 @@ body {
     background: #ddd;
     border-radius: 4px;
 }
+
+.page-title,
+h1 {
+    font-family: 'Playfair Display', serif;
+}
+
+body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+}
+
