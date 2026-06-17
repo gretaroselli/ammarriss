@@ -28,7 +28,7 @@ def login(username: str = Body(...), password: str = Body(...), db: MySQLConnect
         passwordBytes = password.encode('utf-8')
         hashBytes = hashed_password_from_db.encode('utf-8')
 
-        currentUserToken = "100"
+        currentUserToken = secrets.token_hex(16)
         tokens.append({"token": currentUserToken})
 
         
@@ -48,7 +48,7 @@ def login(username: str = Body(...), password: str = Body(...), db: MySQLConnect
 def check_token(clientToken: str = Body(...), db: MySQLConnection = Depends(get_db)):
 
     for token in tokens:
-        if token["token"] == clientToken:
+        if secrets.compare_digest(token["token"], clientToken):
             return {"message": "Token is valid"}
 
     raise HTTPException(status_code=401, detail="Invalid token")
@@ -240,6 +240,7 @@ def get_categories(db: MySQLConnection = Depends(get_db)):
     finally:
         cursor.close()
 
+#get proucts by category
 @router.get("/categories/{category_id}/products")
 def get_products_by_category(category_id: int, db: MySQLConnection = Depends(get_db)):
     cursor = db.cursor(dictionary=True)
@@ -254,7 +255,7 @@ def get_products_by_category(category_id: int, db: MySQLConnection = Depends(get
 
         # Fetch all products mapped explicitly to this category id
         query = """
-            SELECT product_id, product_name, unit_price, category_id 
+            SELECT product_id, product_name, unit_price, category_id, image_url
             FROM product 
             WHERE category_id = %s 
             ORDER BY product_name ASC
@@ -345,6 +346,7 @@ def update_product_and_combo_items(
     price: float = Form(...),
     combo_items: str = Form(None),
     image: UploadFile = File(None),
+    admin_id: int = Form(...),
     db: MySQLConnection = Depends(get_db)
 ):
     cursor = db.cursor()
@@ -367,10 +369,10 @@ def update_product_and_combo_items(
 
         update_product_query = """
             UPDATE product 
-            SET product_name = %s, unit_price = %s, image_url = %s 
+            SET product_name = %s, unit_price = %s, image_url = %s, admin_id = %s
             WHERE product_id = %s
         """
-        cursor.execute(update_product_query, (product_name, price, filename, product_id))
+        cursor.execute(update_product_query, (product_name, price, filename,admin_id, product_id))
 
         if combo_items is not None:
             parsed_items = json.loads(combo_items)
@@ -450,8 +452,14 @@ def delete_product(product_id: int, db: MySQLConnection = Depends(get_db)):
         cursor.execute(query, (product_id,))
         db.commit()
         return {"status": "Success", "message": "Product deleted successfully"}
-    except:
-        pass
+    except Exception as e:
+        db.rollback()
+        if hasattr(e, 'errno') and e.errno == 1451:
+            raise HTTPException(
+                status_code=409, 
+                detail="Cannot delete this product because it is tied to past order histories."
+            )
+        raise HTTPException(status_code=500, detail=str(e))
     finally:
         cursor.close()
 
@@ -464,8 +472,14 @@ def delete_category(category_id: int, db: MySQLConnection = Depends(get_db)):
         cursor.execute(query, (category_id,))  
         db.commit()
         return {"status": "Success", "message": "Category deleted successfully"}
-    except:
-        pass
+    except Exception as e:
+        db.rollback()
+        if hasattr(e, 'errno') and e.errno == 1451:
+            raise HTTPException(
+                status_code=409, 
+                detail="Cannot delete this product because it is tied to past order histories."
+            )
+        raise HTTPException(status_code=500, detail=str(e))
     finally:
         cursor.close()
 

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Payment - Amarri's Kitchen</title>
+    <link rel="stylesheet" href="/static/kiosk/css/shared.css" />
+    <link rel="stylesheet" href="/static/kiosk/css/payment.css" />
+</head>
+
+<body class="payment-page">
+
+    <main class="payment-shell">
+        <section class="payment-panel">
+            <div class="payment-header">
+                <img src="/static/kiosk/images/logo_ak.jpg" alt="Amarri's Kitchen logo">
+                <div>
+                    <p class="payment-kicker" id="orderMode">Dine In</p>
+                    <h1>Choose Payment</h1>
+                </div>
+            </div>
+
+            <div class="payment-summary">
+                <div>
+                    <span>Items</span>
+                    <strong id="itemCount">0</strong>
+                </div>
+                <div>
+                    <span>Total</span>
+                    <strong id="paymentTotal">PHP 0.00</strong>
+                </div>
+            </div>
+
+            <div class="payment-options" aria-label="Payment methods">
+                <button class="payment-option" type="button" data-method="Online">
+                    <span class="payment-icon">QR</span>
+                    <span>
+                        <strong>Pay Online</strong>
+                        <small>Scan QR code</small>
+                    </span>
+                </button>
+
+                <button class="payment-option" type="button" data-method="Counter">
+                    <span class="payment-icon">PHP</span>
+                    <span>
+                        <strong>Pay at Counter</strong>
+                        <small>Cash or card</small>
+                    </span>
+                </button>
+            </div>
+
+            <div class="qr-panel" id="qrPanel" hidden>
+                <div class="qr-code">
+                    <span>QR</span>
+                </div>
+                <p>Show this screen to the counter after scanning.</p>
+            </div>
+
+            <p class="payment-message" id="paymentMessage">Select a payment method to continue.</p>
+
+            <div class="payment-actions">
+                <a href="cart.html">BACK</a>
+                <button type="button" id="confirmPayment" disabled>CONFIRM PAYMENT</button>
+            </div>
+        </section>
+    </main>
+
+    <script src="/static/kiosk/js/payment.js"></script>
+</body>
+
+</html>

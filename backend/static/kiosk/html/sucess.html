@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Order Placed - Amarri's Kitchen</title>
+    <link rel="stylesheet" href="/static/kiosk/css/shared.css" />
+    <link rel="stylesheet" href="/static/kiosk/css/sucess.css" />
+</head>
+
+<body class="success-page">
+
+    <main class="success-bg">
+        <section class="success-card">
+            <img src="/static/kiosk/images/logo_ak.jpg" alt="Amarri's Kitchen logo">
+
+            <p class="success-kicker" id="successMode">Dine In</p>
+            <h1>Order Placed!</h1>
+            <p class="success-message" id="successMessage">Please proceed to the counter to confirm payment.</p>
+
+            <div class="queue-box">
+                <small>Your queue number is</small>
+                <h2 id="queueNumber">B-000</h2>
+            </div>
+
+            <div class="success-details">
+                <div>
+                    <span>Payment</span>
+                    <strong id="paymentMethod">Counter</strong>
+                </div>
+                <div>
+                    <span>Total</span>
+                    <strong id="orderTotal">PHP 0.00</strong>
+                </div>
+            </div>
+
+            <button type="button" id="newOrderBtn">START NEW ORDER</button>
+            <p class="tap-hint">Tap anywhere outside the button to start again.</p>
+        </section>
+    </main>
+
+    <script src="/static/kiosk/js/success.js"></script>
+</body>
+
+</html>

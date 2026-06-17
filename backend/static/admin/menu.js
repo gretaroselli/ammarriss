@@ -68,13 +68,18 @@ function handleFileSelect(file) {
     if (!file || !file.type.startsWith("image/")) return;
 
     selectedImageFile = file;
-    const reader = new FileReader();
-    reader.onload = (e) => {
-        document.getElementById("edit-image-preview").src = e.target.result;
 
-        // Hide drop zone box, reveal preview wrapper image layout component
-        document.getElementById("image-drop-zone").classList.add("d-none");
-        document.getElementById("image-preview-container").classList.remove("d-none");
+    const dropZone = document.getElementById("image-drop-zone");
+    const reader = new FileReader();
+
+    reader.onload = (e) => {
+        if (dropZone) {
+            dropZone.innerHTML = `
+                <img src="${e.target.result}" class="img-fluid rounded" style="max-height: 100px; object-fit: contain;" id="edit-image-preview">
+                <p class="small text-muted mt-2 mb-0" id="drop-zone-text">Click or drag a new image here to replace it</p>
+                <input type="file" id="edit-item-image" accept="image/*" class="d-none">
+            `;
+        }
     };
     reader.readAsDataURL(file);
 }
@@ -146,7 +151,7 @@ async function loadProductsByCategory(categoryId) {
                     <td class="fw-semibold text-dark py-3 ps-4">${product.product_name}</td>
                     <td class="text-dark py-3">₱${parseFloat(product.unit_price || product.price).toFixed(2)}</td>
                     <td class="py-3 pe-4 text-end">
-                        <button class="btn btn-sm text-white px-3 me-1 rounded-3" style="background-color: #d19bed;" onclick="editProduct(${product.product_id})">Edit</button>
+                        <button class="btn btn-sm text-white px-3 me-1 rounded-3" style="background-color: #d19bed;" onclick="editProduct(${product.product_id}, '${product.image_url}')">Edit</button>
                         <button class="btn btn-sm btn-danger px-3 rounded-3" onclick="deleteProduct(${product.product_id})">Remove</button>
                     </td>
                 </tr>
@@ -161,7 +166,7 @@ async function loadProductsByCategory(categoryId) {
     }
 }
 
-async function editProduct(productId) {
+async function editProduct(productId, imageUrl) {
     try {
         if (document.activeElement) {
             document.activeElement.blur();
@@ -174,8 +179,38 @@ async function editProduct(productId) {
         const fileInput = document.getElementById("edit-item-image");
         if (fileInput) fileInput.value = "";
 
-        document.getElementById("image-preview-container").classList.add("d-none");
-        document.getElementById("image-drop-zone").classList.remove("d-none");
+
+        const dropZone = document.getElementById("image-drop-zone");
+
+        if (imageUrl) {
+            // SUCCESS: Product has an image. Inject it directly into the drop zone container as the default state.
+            const cleanImgUrl = `/uploads/${imageUrl}`;
+
+            if (dropZone) {
+                dropZone.innerHTML = `
+                    <img src="${cleanImgUrl}" class="img-fluid rounded" style="max-height: 100px; object-fit: contain;" id="edit-image-preview">
+                    <p class="small text-muted mt-2 mb-0" id="drop-zone-text">Click or drag a new image here to replace it</p>
+                    <input type="file" id="edit-item-image" accept="image/*" class="d-none">
+                `;
+                dropZone.classList.remove("d-none"); // Keep it visible!
+            }
+        } 
+        else 
+        {
+            // FALLBACK: No image exists yet, restore the blank template layout
+            if (dropZone) {
+                dropZone.innerHTML = `
+                    <i class="bi bi-cloud-arrow-up fs-2 text-muted mb-1"></i>
+                    <p class="small text-muted mb-0" id="drop-zone-text">Drag & drop an image here or click to browse</p>
+                    <input type="file" id="edit-item-image" accept="image/*" class="d-none">
+                `;
+                dropZone.classList.remove("d-none");
+            }
+        }
+
+
+        // document.getElementById("image-preview-container").classList.add("d-none");
+        // document.getElementById("image-drop-zone").classList.remove("d-none");
 
         const comboSection = document.getElementById("combo-items-section");
         const comboList = document.getElementById("combo-items-list");
@@ -190,7 +225,6 @@ async function editProduct(productId) {
             const data = await allProdsRes.json();
 
             if (Array.isArray(data)) {
-                // Perfect, this is the flat list from your database query
                 allProducts = data;
             } else if (data && typeof data === 'object') {
                 // Fallback: If the server forces the categorized object, flatten it completely
@@ -212,7 +246,7 @@ async function editProduct(productId) {
                 const currentLoopId = p.product_id ? p.product_id.toString() : "";
                 const editingId = productId ? productId.toString() : "";
 
-                // ✅ Exclude the parent item so a combo can't recursively contain itself
+                // Exclude the parent item so a combo can't recursively contain itself
                 if (currentLoopId !== editingId) {
                     // Adapt to both backend field name naming models seamlessly
                     let rawName = p.product_name || p.name || p.PRODUCT_NAME || "Unnamed Item";
@@ -246,15 +280,15 @@ async function editProduct(productId) {
             priceField.value = product.unit_price !== undefined ? product.unit_price : (product.price !== undefined ? product.price : 0);
         }
 
-        if (product.image_url) {
-            const previewImg = document.getElementById("edit-image-preview");
-            if (previewImg) previewImg.src = `/static/uploads/${product.image_url}`;
+        // if (product.image_url) {
+        //     const previewImg = document.getElementById("edit-image-preview");
+        //     if (previewImg) previewImg.src = `/uploads/${product.image_url}`;
 
-            const dropZone = document.getElementById("image-drop-zone");
-            const previewContainer = document.getElementById("image-preview-container");
-            if (dropZone) dropZone.classList.add("d-none");
-            if (previewContainer) previewContainer.classList.remove("d-none");
-        }
+        //     const dropZone = document.getElementById("image-drop-zone");
+        //     const previewContainer = document.getElementById("image-preview-container");
+        //     if (dropZone) dropZone.classList.add("d-none");
+        //     if (previewContainer) previewContainer.classList.remove("d-none");
+        // }
 
         if (comboSection) comboSection.classList.remove("d-none");
 
@@ -293,7 +327,7 @@ async function handleEditFormSubmit(event) {
 
     // Append layout mapping collection safely to target payload field keys
     formData.append("combo_items", JSON.stringify(currentComboItems));
-    formData.append("admin_id", localStorage.getItem('admin_id'));
+    formData.append("admin_id", sessionStorage.getItem('admin_id'));
 
     if (selectedImageFile) {
         formData.append("image", selectedImageFile);
@@ -394,7 +428,7 @@ async function triggerAddCategory() {
         const response = await fetch("/categories/create", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ category_name: categoryName, admin_id: localStorage.getItem('admin_id')})
+            body: JSON.stringify({ category_name: categoryName, admin_id: sessionStorage.getItem('admin_id')})
         });
 
         if (!response.ok) throw new Error("Failed to create category");
@@ -418,7 +452,7 @@ async function triggerAddProductPlaceholder() {
         const response = await fetch("/products/create", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ category_id: parseInt(activeCategoryId), admin_id: localStorage.getItem('admin_id')})
+            body: JSON.stringify({ category_id: parseInt(activeCategoryId), admin_id: sessionStorage.getItem('admin_id')})
         });
 
         if (!response.ok) throw new Error("Failed to create product");
@@ -445,22 +479,30 @@ async function deleteProduct(productId) {
             }
         });
 
-        if (!response.ok) {
+        if (response.status === 409) {
+            alert("Cannot delete product that ties to an existing orders!! please contact the developer or system administrator to archive this record safely")
+        }
+        else if (!response.ok && response.status !== 409) {
             throw new Error("Failed to delete product");
         }
-
+        else if(response.ok)
+        {
+            alert("Product deleted successfully.");
+        }
 
         if (typeof activeCategoryId !== 'undefined') {
             loadProductsByCategory(activeCategoryId);
         }
-    } catch (error) {
+    } 
+    catch (error)
+    {
         console.error("Delete Error:", error);
         alert("Error: Could not delete product.");
     }
 }
 //category deletion
 async function deleteCategory(categoryId) {
-    if (!confirm("Are you sure? This will delete the category and all products inside it!")) {
+    if (!confirm("Are you sure?")) {
         return;
     }
 
@@ -469,15 +511,30 @@ async function deleteCategory(categoryId) {
             method: "DELETE"
         });
 
-        if (!response.ok) throw new Error("Failed to delete category");
 
-        if (activeCategoryId === categoryId) {
+        if (response.status === 409)
+        {
+            alert("Cannot delete category with products that ties to an existing orders! please contact the developer or system administrator to archive this record safely")
+        }
+        else if (!response.ok && response.status !== 409)
+        {
+            throw new Error("Failed to delete category");
+        }
+        else if(response.ok)
+        {
+            alert("Category deleted successfully.");
+            loadCategories();
+        }
+
+
+        if (activeCategoryId === categoryId)
+        {
             activeCategoryId = null;
         }
 
-        alert("Category deleted successfully.");
-        loadCategories();
-    } catch (error) {
+    } 
+    catch (error)
+    {
         console.error("Error:", error);
         alert("Error: Could not delete category.");
     }

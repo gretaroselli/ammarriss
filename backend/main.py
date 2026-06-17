@@ -10,10 +10,15 @@ app = FastAPI()
 
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
+app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
 
 @app.get("/admin")
 async def get_admin():
     return FileResponse("static/admin/index.html")
+
+@app.get("/kiosk")
+async def get_kiosk():
+    return FileResponse("static/kiosk/html/index.html")
 
 @app.get("/")
 async def get_admin():

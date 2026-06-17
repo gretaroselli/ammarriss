@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Menu – Amarri's Kitchen</title>
+  <link rel="stylesheet" href="/static/kiosk/css/shared.css" />
+  <link rel="stylesheet" href="/static/kiosk/css/menu.css" />
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <div class="menu-header">
+    <div class="header-top">
+      <h2>Amarri's Kitchen</h2>
+      <span class="mode-badge" id="modeBadge">Dine In</span>
+    </div>
+    <div class="menu-search">
+      <span>🔍</span>
+      <input type="text" placeholder="Search menu items..." oninput="filterMenu(this.value)" />
+    </div>
+  </div>
+
+  <!-- BODY -->
+  <div class="menu-body">
+
+    <!-- Category Sidebar — filled by JS -->
+    <div class="cat-sidebar" id="catSidebar"></div>
+
+    <!-- Menu Grid — filled by JS -->
+    <div class="menu-grid-wrap">
+      <div class="cat-section-title" id="catTitle"></div>
+      <div class="menu-grid" id="menuGrid"></div>
+    </div>
+
+  </div>
+
+  <!-- FOOTER -->
+  <div class="menu-footer">
+    <a href="/static/kiosk/html/index.html" class="btn-back">← Back</a>
+    <div class="footer-right">
+      <button class="btn-cart" onclick="toggleCart()">
+        🛒 Cart <span class="cart-count" id="cartCount">0</span>
+      </button>
+      <button class="btn-checkout" onclick="toggleCart()">CHECKOUT</button>
+    </div>
+  </div>
+
+  <!-- CART DRAWER -->
+  <div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
+  <div class="cart-drawer" id="cartDrawer">
+    <div class="cart-handle"></div>
+    <div class="cart-title">Your Order</div>
+    <div id="cartItems">
+      <p class="cart-empty">Your cart is empty</p>
+    </div>
+    <div class="cart-total-row" id="cartTotalRow" style="display:none;">
+      <span>Total</span>
+      <span class="cart-total-amount" id="cartTotal">₱0</span>
+    </div>
+    <button class="btn-place-order" id="placeOrderBtn" style="display:none;" onclick="placeOrder()">
+      Place Order
+    </button>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="/static/kiosk/js/menu.js"></script>
+</body>
+
+</html>
