@@ -491,3 +491,19 @@ def get_transactions(db: MySQLConnection = Depends(get_db)):
     cursor.execute(query)
     transactions = cursor.fetchall()
     return transactions
+
+
+#hide product
+@router.put("/products/hide/{product_id}")
+def hide_product(product_id: int, db: MySQLConnection = Depends(get_db)):
+    cursor = db.cursor()
+    try:
+        query = "UPDATE product SET category_id = 'Hidden' WHERE product_id = %s"
+        cursor.execute(query, (product_id,))
+        db.commit()
+
+        return {"message":"product hidden successfully"}
+    except:
+        raise HTTPException(status_code=500, detail="Database Rejected")
+    finally:
+        cursor.close()
