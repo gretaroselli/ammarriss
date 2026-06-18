@@ -218,7 +218,7 @@ function showToast(msg) {
     t.textContent = msg;
     t.classList.add('show');
     clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => t.classList.remove('show'), 2200);
+    toastTimer = setTimeout(() => t.classList.remove('show'), 1000);
 }
 
 // ——— Init ———
